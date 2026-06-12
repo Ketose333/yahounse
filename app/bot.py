@@ -18,10 +18,11 @@ class YahoUnseBot(commands.Bot):
         await self.load_extension("app.commands.horoscope")
 
         # 재시작 후에도 버튼·드랍다운이 살아있도록 persistent view 등록
-        from app.commands.horoscope import FortuneView, StatsView, RankingView
+        from app.commands.horoscope import CompatibilityInviteView, FortuneView, StatsView, RankingView
         self.add_view(FortuneView.for_persistence())
         self.add_view(StatsView())
         self.add_view(RankingView())
+        self.add_view(CompatibilityInviteView())
 
         # 글로벌 동기화 — User-Installable App으로 모든 서버·DM에서 사용 가능
         await self.tree.sync()
@@ -36,7 +37,7 @@ class YahoUnseBot(commands.Bot):
             log.info("개발용 길드 즉시 동기화 완료 (GUILD_ID=%s)", guild_id)
 
     async def on_ready(self) -> None:
-        await self.change_presence(activity=discord.Game(name="야호운세 | /별자리순위"))
+        await self.change_presence(activity=discord.Game(name="야호운세 | /운세순위"))
         log.info("봇 준비 완료: %s (ID: %s)", self.user, self.user.id)
         from app.utils.user_store import set_zodiac, get_zodiac
         if not get_zodiac(self.user.id):
